@@ -1,0 +1,12 @@
+Tentar melhorar os gráficos
+Tentar melhorar a página inicial
+Ajeitar total nos graficos
+max 255 nos inputs
+Melhorar placeholders
+baixar arquivos online
+
+fazer parte de notificacoes
+verificar se email ja existe
+melhorar filtro diario, semanal e mensal
+gerar relatórios
+adicionar acoes dentro dos infos
