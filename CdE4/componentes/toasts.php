@@ -19,9 +19,29 @@ function notificacaoEntrar()
     }
 }
 
+function notificacaoNaoAutorizado()
+{
+    if (isset($_SESSION['NaoAutorizado'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "Credenciais não autorizadas.",
+                    icon: "danger",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['NaoAutorizado']);
+    }
+}
+
 function notificacaoBemVindo($nome)
 {
-    if (isset($_SESSION['Bem-vindo'])) {
+    if (isset($_SESSION['BemVindo'])) {
         echo '
         <script>
             window.onload = function() {
@@ -35,6 +55,6 @@ function notificacaoBemVindo($nome)
             }
         </script>';
 
-        unset($_SESSION['Bem-vindo']);
+        unset($_SESSION['BemVindo']);
     }
 }

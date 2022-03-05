@@ -2,7 +2,7 @@
 function logar($email, $senha)
 {
     $pdo = Database::connect();
-    $sql = "SELECT * FROM usuarios_usuarios WHERE email = :email";
+    $sql = "SELECT * FROM usuarios_usuarios WHERE email = :email and tipo IN('Administrador Geral', 'Administrador') and ativo = 0";
     $records = $pdo->prepare($sql);
     $records->bindParam(':email', $email);
     $records->execute();
@@ -10,17 +10,16 @@ function logar($email, $senha)
 
     $contar = is_array($result) ? count($result) : 0;
 
-    if ($contar > 0 && ($senha == $result['senha']) && $result['ativo'] == 0) {
+    if ($contar > 0 && $senha == $result['senha']) {
         $_SESSION['id'] = $result['id'];
         $_SESSION['nome'] = $result['nome'];
         $_SESSION['email'] = $result['email'];
         $_SESSION['tipo'] = $result['tipo'];
 
-        if ($_SESSION['tipo'] == "Administrador Geral") {
-            $_SESSION['Bem-vindo'] = True;
-            redirecionarPara("home.php");
-        }
+        $_SESSION['BemVindo'] = True;
+        redirecionarPara("home.php", false);
     } else {
-        redirecionarPara("index.php");
+        $_SESSION['NaoAutorizado'] = True;
+        redirecionarPara("", true);
     }
 }

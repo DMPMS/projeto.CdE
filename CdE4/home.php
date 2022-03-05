@@ -10,7 +10,7 @@ require_once("outros/logado.php");
 include_once("outros/redirecionarPara.php");
 
 if (!logado()) {
-    redirecionarPara("index.php");
+    redirecionarPara("index.php", false);
 } else {
     include_once("funcoes.php");
     include_once("componentes/html.php");
