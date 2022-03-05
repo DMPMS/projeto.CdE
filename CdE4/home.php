@@ -5,20 +5,26 @@ session_start();
 require_once("database.php");
 $pdo = Database::connect();
 
-include_once("funcoes.php");
+require_once("outros/logado.php");
+
+include_once("outros/redirecionarPara.php");
 
 if (!logado()) {
     redirecionarPara("index.php");
 } else {
+    include_once("funcoes.php");
+    include_once("componentes/html.php");
+    include_once("componentes/scripts.php");
+    include_once("componentes/toasts.php");
 ?>
-    <html class="no-js" lang="en">
+    <html>
 
     <head>
         <title>Página Inicial</title>
         <!--Ícone-->
-        <link rel="icon" href="dist/img/icone.png" type="image/x-icon" />
+        <link rel="icon" href="dist/img/icone.png">
         <!--Fonte-->
-        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800">
         <!--Bootstrap-->
         <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
         <!--Ik Ícones-->
@@ -29,13 +35,11 @@ if (!logado()) {
         <link rel="stylesheet" href="plugins/jquery-toast/css/jquery.toast.min.css">
         <!--Theme CSS-->
         <link rel="stylesheet" href="dist/css/theme.min.css">
-        <script>
-            function Sair() {
-                window.location = "outros/sair.php";
-            }
-        </script>
 
+        <!--Scripts-->
+        <?php sair("outros/sair.php"); ?>
         <?php notificacaoBemVindo($_SESSION['nome']); ?>
+        <!--/Scripts-->
     </head>
 
     <body>
@@ -65,74 +69,10 @@ if (!logado()) {
                             </div>
                         </div>
                         <div class="row clearfix">
-                            <div class="col-lg-3 col-md-6 col-sm-12">
-                                <a href="pages/usuarios/home_usuarios.php">
-                                    <div class="widget bg-primary shadow-lg">
-                                        <div class="widget-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="state">
-                                                    <h6>Usuários</h6>
-                                                    <h2>28</h2>
-                                                </div>
-                                                <div class="icon">
-                                                    <i class="ik ik-users"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12">
-                                <a href="pages/produtos/home_produtos.php">
-                                    <div class="widget bg-success shadow-lg">
-                                        <div class="widget-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="state">
-                                                    <h6>Produtos</h6>
-                                                    <h2>21</h2>
-                                                </div>
-                                                <div class="icon">
-                                                    <i class="ik ik-package"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12">
-                                <a href="pages/vendas/home_vendas.php">
-                                    <div class="widget bg-warning shadow-lg">
-                                        <div class="widget-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="state">
-                                                    <h6>Vendas</h6>
-                                                    <h2>35</h2>
-                                                </div>
-                                                <div class="icon">
-                                                    <i class="ik ik-shopping-cart"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12">
-                                <a href="">
-                                    <div class="widget bg-danger shadow-lg">
-                                        <div class="widget-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="state">
-                                                    <h6>Tarefas</h6>
-                                                    <h2>23</h2>
-                                                </div>
-                                                <div class="icon">
-                                                    <i class="ik ik-clipboard"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                            <?php botaoNavegacao1("Usuários", "80", "primary", "users", "test.php"); ?>
+                            <?php botaoNavegacao1("Produtos", "67", "success", "package", "test2.php"); ?>
+                            <?php botaoNavegacao1("Vendas", "854", "warning", "shopping-cart", "test3.php"); ?>
+                            <?php botaoNavegacao1("Tarefas", "93", "danger", "clipboard", "test4.php"); ?>
                         </div>
                     </div>
                 </div>

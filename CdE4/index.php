@@ -5,13 +5,15 @@ session_start();
 require_once("database.php");
 $pdo = Database::connect();
 
-include_once("funcoes.php");
+require_once("outros/logar.php");
+
+include_once("outros/redirecionarPara.php");
+include_once("componentes/toasts.php");
 
 $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 if (isset($data['entrar']) == "Entrar") {
   logar($data['email'], $data['senha']);
 }
-
 ?>
 <html>
 
