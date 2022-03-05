@@ -26,8 +26,8 @@ if (isset($data['entrar']) == "Entrar") {
   <link rel="stylesheet" href="plugins/jquery-toast/css/jquery.toast.min.css">
 
   <!--Scripts-->
-  <?php notificacaoEntrar(); ?>
-  <?php notificacaoNaoAutorizado(); ?>
+  <?php toastEntrar(); ?>
+  <?php toastNaoAutorizado(); ?>
   <!--/Scripts-->
 </head>
 

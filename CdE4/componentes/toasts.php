@@ -1,5 +1,5 @@
 <?php
-function notificacaoEntrar()
+function toastEntrar()
 {
     if (isset($_SESSION['Entrar'])) {
         echo '
@@ -19,7 +19,7 @@ function notificacaoEntrar()
     }
 }
 
-function notificacaoNaoAutorizado()
+function toastNaoAutorizado()
 {
     if (isset($_SESSION['NaoAutorizado'])) {
         echo '
@@ -39,7 +39,7 @@ function notificacaoNaoAutorizado()
     }
 }
 
-function notificacaoBemVindo($nome)
+function toastBemVindo($nome)
 {
     if (isset($_SESSION['BemVindo'])) {
         echo '

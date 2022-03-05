@@ -38,7 +38,7 @@ if (!logado()) {
 
         <!--Scripts-->
         <?php sair("outros/sair.php"); ?>
-        <?php notificacaoBemVindo($_SESSION['nome']); ?>
+        <?php toastBemVindo($_SESSION['nome']); ?>
         <!--/Scripts-->
     </head>
 
