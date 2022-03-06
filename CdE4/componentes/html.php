@@ -138,8 +138,8 @@ function headerOpcoes()
     echo '
     <div class="top-menu d-flex align-items-center">
         <div class="dropdown">
-            <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="dist/img/usuarios/' . $_SESSION['id'] . '.jpg" alt=""></a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a href="#" data-toggle="dropdown"><img class="avatar" src="dist/img/usuarios/' . $_SESSION['id'] . '.jpg"></a>
+            <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i> Perfil</a>
                 <a class="dropdown-item" href="profile.html"><i class="ik ik-clipboard dropdown-icon"></i> Tarefas</a>
                 <button class="dropdown-item text-red" data-toggle="modal" data-target="#Sair"><i class="ik ik-power dropdown-icon text-red"></i> Sair</button>
