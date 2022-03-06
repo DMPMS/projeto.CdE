@@ -117,3 +117,33 @@ function sidebarNavItemComSubItem($icone, $nome, $subItens)
         </div>
     </div>';
 }
+
+function headerSearch()
+{
+    echo '
+    <div class="top-menu d-flex align-items-center">
+        <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+        <div class="header-search">
+            <div class="input-group">
+                <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                <input type="text" class="form-control">
+                <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+            </div>
+        </div>
+    </div>';
+}
+
+function headerOpcoes()
+{
+    echo '
+    <div class="top-menu d-flex align-items-center">
+        <div class="dropdown">
+            <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="dist/img/usuarios/' . $_SESSION['id'] . '.jpg" alt=""></a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i> Perfil</a>
+                <a class="dropdown-item" href="profile.html"><i class="ik ik-clipboard dropdown-icon"></i> Tarefas</a>
+                <button class="dropdown-item text-red" data-toggle="modal" data-target="#Sair"><i class="ik ik-power dropdown-icon text-red"></i> Sair</button>
+            </div>
+        </div>
+    </div>';
+}

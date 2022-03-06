@@ -13,6 +13,7 @@ if (!logado()) {
     redirecionarPara("index.php", false);
 } else {
     include_once("funcoes.php");
+    include_once("componentes/modals.php");
     include_once("componentes/html.php");
     include_once("componentes/scripts.php");
     include_once("componentes/toasts.php");
