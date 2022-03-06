@@ -24,7 +24,7 @@ if (!logado()) {
         <!--Ícone-->
         <link rel="icon" href="dist/img/icone.png">
         <!--Fonte-->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800">
+        <link rel="stylesheet" href="<?php fonte();?>">
         <!--Bootstrap-->
         <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
         <!--Ik Ícones-->

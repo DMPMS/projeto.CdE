@@ -1,4 +1,9 @@
 <?php
+
+function fonte(){
+    echo 'https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800';
+}
+
 function botaoNavegacao1($titulo, $subTitulo, $cor, $icone, $caminho)
 {
     echo '
