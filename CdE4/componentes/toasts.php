@@ -39,14 +39,14 @@ function toastNaoAutorizado()
     }
 }
 
-function toastBemVindo($nome)
+function toastBemVindo()
 {
     if (isset($_SESSION['BemVindo'])) {
         echo '
         <script>
             window.onload = function() {
                 $.toast({
-                    text: "Bem-vindo(a) novamente, <b>' . $nome . '</b>.",
+                    text: "Bem-vindo(a) novamente, <b>' . nomeUsuario($_SESSION['id']) . '</b>.",
                     icon: "info",
                     hideAfter: 5000,
                     loader: false,

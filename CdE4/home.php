@@ -39,7 +39,7 @@ if (!logado()) {
 
         <!--Scripts-->
         <?php sair("outros/sair.php"); ?>
-        <?php toastBemVindo($_SESSION['nome']); ?>
+        <?php toastBemVindo(); ?>
         <!--/Scripts-->
     </head>
 

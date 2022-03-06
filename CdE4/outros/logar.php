@@ -12,9 +12,6 @@ function logar($email, $senha)
 
     if ($contar > 0 && $senha == $result['senha']) {
         $_SESSION['id'] = $result['id'];
-        $_SESSION['nome'] = $result['nome'];
-        $_SESSION['email'] = $result['email'];
-        $_SESSION['tipo'] = $result['tipo'];
 
         $_SESSION['BemVindo'] = True;
         redirecionarPara("home.php", false);
