@@ -54,20 +54,10 @@ if (!logado()) {
                 <!--Principal-->
                 <div class="main-content">
                     <div class="container-fluid">
-                        <div class="page-header">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="page-header-title">
-                                        <i class="ik ik-home bg-blue"></i>
-                                    </div>
-                                    <nav class="breadcrumb-container">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item active">Página Inicial</li>
-                                        </ol>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
+                        <!--Page-Header-->
+                        <?php pageHeader([6, [], ["home", "blue"]],
+                                         [6, [], "Página Inicial"]); ?>
+                        <!--/Page-Header-->
                         <div class="row clearfix">
                             <?php botaoNavegacao1("Usuários", "80", "primary", "users", "test.php"); ?>
                             <?php botaoNavegacao1("Produtos", "67", "success", "package", "test2.php"); ?>
