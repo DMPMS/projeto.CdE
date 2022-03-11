@@ -58,3 +58,63 @@ function toastBemVindo()
         unset($_SESSION['BemVindo']);
     }
 }
+
+function toastMarcadasComoLidas($modulo)
+{
+    if (isset($_SESSION['MarcadasComoLidas'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "As novas atualizações de <b>' . $modulo . '</b> foram marcadas como lidas.",
+                    icon: "success",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['MarcadasComoLidas']);
+    }
+}
+
+function toastUsuarioExcluido()
+{
+    if (isset($_SESSION['UsuarioExcluido'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "' . tipoUsuario($_SESSION['UsuarioExcluido']) . ' excluído(a).",
+                    icon: "success",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['UsuarioExcluido']);
+    }
+}
+
+function toastUsuarioCadastrado()
+{
+    if (isset($_SESSION['UsuarioCadastrado'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "' . tipoUsuario($_SESSION['UsuarioCadastrado']) . ' cadastrado(a).",
+                    icon: "success",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['UsuarioCadastrado']);
+    }
+}

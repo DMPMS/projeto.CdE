@@ -32,7 +32,7 @@ if (!logado()) {
         <link rel="stylesheet" href="plugins/icon-kit/css/iconkit.min.css">
         <!--ScroolBar Menu-->
         <link rel="stylesheet" href="plugins/perfect-scrollbar/css/perfect-scrollbar.css">
-        <!--Pra Notificação-->
+        <!--jQuery Toast-->
         <link rel="stylesheet" href="plugins/jquery-toast/css/jquery.toast.min.css">
         <!--Theme CSS-->
         <link rel="stylesheet" href="dist/css/theme.min.css">
@@ -60,7 +60,7 @@ if (!logado()) {
                                          [6, [], "Página Inicial"]); ?>
                         <!--/Page-Header-->
                         <div class="row clearfix">
-                            <?php botaoNavegacao1("Usuários", "80", "primary", "users", "test.php"); ?>
+                            <?php botaoNavegacao1("Usuários", qtdUsuarios(), "primary", "users", "modulos/usuarios/usuarios.home.php"); ?>
                             <?php botaoNavegacao1("Produtos", "67", "success", "package", "test2.php"); ?>
                             <?php botaoNavegacao1("Vendas", "854", "warning", "shopping-cart", "test3.php"); ?>
                             <?php botaoNavegacao1("Tarefas", "93", "danger", "clipboard", "test4.php"); ?>

@@ -9,7 +9,7 @@ if (!logado()) {
                 <?php headerSearch(); ?>
                 <!--/Barra de Pesquisa-->
                 <!--Opções-->
-                <?php headerOpcoes("dist/img/usuarios/"); ?>
+                <?php headerOpcoes("../../dist/img/usuarios/"); ?>
                 <!--/Opções-->
             </div>
         </div>

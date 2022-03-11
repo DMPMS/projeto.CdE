@@ -11,7 +11,7 @@ if (!logado()) {
             <div class="nav-container">
                 <nav id="main-menu-navigation" class="navigation-main">
                     <!--Sidebar Nav-Level-->
-                    <?php sidebarNavLevel(); ?>
+                    <?php sidebarNavLevel("dist/img/usuarios/"); ?>
                     <!--/Sidebar Nav-Level-->
                     <?php sidebarNavItem("home.php", "home", "Página Inicial"); ?>
                     <?php sidebarNavItemComSubItem("users", "Usuários", [["modulos/usuarios/usuarios.home.php", "Início"], ["modulos/usuarios/usuarios.novoUsuario.php", "Novo Usuário"], ["modulos/usuarios/usuarios.clientes.php", "Clientes"], ["modulos/usuarios/usuarios.administradores.php", "Administradores"]]); ?>
