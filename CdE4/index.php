@@ -5,9 +5,8 @@ session_start();
 require_once("database.php");
 $pdo = Database::connect();
 
-require_once("outros/logar.php");
+require_once("outros/outrasFuncoes.php");
 
-include_once("outros/redirecionarPara.php");
 include_once("componentes/toasts.php");
 
 $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);

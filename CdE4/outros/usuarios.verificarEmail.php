@@ -4,9 +4,7 @@ session_start();
 require_once("../database.php");
 $pdo = Database::connect();
 
-require_once("logado.php");
-
-include_once("redirecionarPara.php");
+require_once("outrasFuncoes.php");
 
 if (!logado()) {
     redirecionarPara("../index.php", false);

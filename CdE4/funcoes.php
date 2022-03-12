@@ -18,18 +18,6 @@ function nomeUsuario($idUsuario)
     return $result['nome'];
 }
 
-function tipoUsuario($idUsuario)
-{
-    $pdo = Database::connect();
-    $sql = "SELECT tipo FROM usuarios_usuarios WHERE id = $idUsuario";
-    $records = $pdo->prepare($sql);
-    $records->execute();
-    $result = $records->fetch(PDO::FETCH_ASSOC);
-    Database::disconnect();
-
-    return $result['tipo'];
-}
-
 function qtdUsuarios($tipo = "'Administrador','Cliente'")
 {
     $pdo = Database::connect();
@@ -42,7 +30,8 @@ function qtdUsuarios($tipo = "'Administrador','Cliente'")
     return $result['total'];
 }
 
-function qdtAtualizacoesUsuarios(){
+function qdtAtualizacoesUsuarios()
+{
     $pdo = Database::connect();
     $sql = "SELECT COUNT(*) as total FROM usuarios_atualizacoes WHERE ativo = 0";
     $records = $pdo->prepare($sql);
@@ -117,6 +106,63 @@ function NovoUsuario($data)
     }
 
     Database::disconnect();
+}
+
+function editarUsuario($data, $result)
+{
+    if (
+        $data['nome'] == $result['nome'] &&
+        $data['email'] == $result['email'] &&
+        $data['endereco'] == $result['endereco'] &&
+        $data['cpf'] == $result['cpf'] &&
+        $data['contato'] == $result['contato'] &&
+        $_FILES['foto']['name'] == ''
+    ) {
+        $houveAlteracoes = false;
+        if (tipoUsuario($result['id']) == "Administrador" && $data['senha'] != $result['senha']) {
+            $houveAlteracoes = true;
+        }
+    } else {
+        $houveAlteracoes = true;
+    }
+
+    if (!$houveAlteracoes) {
+        $_SESSION['NaoEditado'] = true;
+        redirecionarPara("", true);
+    } else {
+
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        if (tipoUsuario($result['id']) == "Administrador") {
+            $sqlEditarUsuario = "UPDATE usuarios_usuarios SET nome = ?,email = ?,senha = ?,contato = ?,cpf = ?,endereco = ? WHERE id = ?";
+        } else if (tipoUsuario($result['id']) == "Cliente") {
+            $sqlEditarUsuario = "UPDATE usuarios_usuarios SET nome = ?,email = ?,contato = ?,cpf = ?,endereco = ? WHERE id = ?";
+        }
+
+        $q = $pdo->prepare($sqlEditarUsuario);
+
+        $data['email'] = strtolower($data['email']);
+
+        if ($_FILES['foto']['name'] != '') {
+            $novo_nome = $result['id'] . ".png";
+            move_uploaded_file($_FILES['foto']['tmp_name'], "../../dist/img/usuarios/" . $novo_nome);
+        }
+
+        if (tipoUsuario($result['id']) == "Administrador") {
+            $q->execute(array($data['nome'], $data['email'], $data['senha'], $data['contato'], $data['cpf'], $data['endereco'], $result['id']));
+        } else if (tipoUsuario($result['id']) == "Cliente") {
+            $q->execute(array($data['nome'], $data['email'], $data['contato'], $data['cpf'], $data['endereco'], $result['id']));
+        }
+
+        novaAtualizacaoUsuario(["Editar Usuário", $result['id'],  $_SESSION['id'], "." . $_SESSION['id'] . ".", horarioAtual()]);
+
+        Database::disconnect();
+
+        $_SESSION['Editado'] = true;
+
+        redirecionarPara("", true);
+    }
 }
 
 function ExcluirUsuario($data)

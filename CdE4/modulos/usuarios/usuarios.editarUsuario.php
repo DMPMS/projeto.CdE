@@ -1,226 +1,85 @@
 <!doctype html>
 <?php
 session_start();
-require_once '../../funcoes.php';
-include_once '../../database.php';
 
-if (isset($_SESSION['id']) == '') {
-    $_SESSION['Entrar'] = True;
-    echo '<script> window.location = "../../index.php"; </script>';
-} else if ($_SESSION['tipo'] != "Administrador Geral") {
+require_once("../../database.php");
+$pdo = Database::connect();
+
+require_once("../../outros/outrasFuncoes.php");
+
+if (!logado()) {
+    redirecionarPara("../../index.php", false);
+} else if (tipoUsuario($_SESSION['id']) != "Administrador Geral") {
     $_SESSION['indisponivel'] = True;
-    echo '<script> window.location = "../../home.php"; </script>';
+    redirecionarPara("../../home.php", false);
+} else if (getIdInvalido($_GET['id'])) {
+    redirecionarPara("../../home.php", false);
 } else {
-    if (!isset($_GET['id']) || $_GET['id'] == '') {
-        $_SESSION['indisponivel'] = True;
-        echo '<script> window.location = "../../home.php"; </script>';
-    } else {
-        $idUsuario = $_GET['id'];
-    }
+    include_once("../../funcoes.php");
+    include_once("../../componentes/modals.php");
+    include_once("../../componentes/html.php");
+    include_once("../../componentes/scripts.php");
+    include_once("../../componentes/toasts.php");
 
-    $pdo = Database::connect();
-    $sql = "SELECT * FROM usuario_usuarios WHERE id = $idUsuario";
-    $records = $pdo->prepare($sql);
-    $records->execute();
-    $result = $records->fetch(PDO::FETCH_ASSOC);
-
-    if ((is_array($result) ? count($result) : 0) == 0 || $result['ativo'] == 1) {
-        $_SESSION['indisponivel'] = True;
-        echo '<script> window.location = "../../home.php"; </script>';
-    }
+    $idUsuario = $_GET['id'];
 
     $data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-    if (isset($data['editar']) == 'editar') {
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        //Editar
-        if ($result['tipo'] == "Cliente") {
-            $sql = "UPDATE usuario_usuarios SET nome = ?,foto = ?,email = ?,endereco = ?, celular = ?,cpf = ? WHERE id = ?";
-        } else if ($result['tipo'] == "Administrador") {
-            $sql = "UPDATE usuario_usuarios SET nome = ?,foto = ?,email = ?,endereco = ?, celular = ?,cpf = ?,senha = ? WHERE id = ?";
-        }
-
-        $q = $pdo->prepare($sql);
-
-        $ID = $idUsuario;
-
-        $data['email'] = strtolower($data['email']);
-
-        //Foto        
-        if ($_FILES['foto']['name'] != '') {
-            $novo_nome = $ID . ".png";
-            move_uploaded_file($_FILES['foto']['tmp_name'], "../../img/usuarios/" . $novo_nome);
-            $foto = $novo_nome;
-        } else {
-            $foto = $result['foto'];
-        }
-
-        if ($result['tipo'] == "Cliente") {
-            $q->execute(array($data['nome'], $foto, $data['email'], $data['endereco'], $data['celular'], $data['cpf'], $idUsuario));
-        } else if ($result['tipo'] == "Administrador") {
-            $q->execute(array($data['nome'], $foto, $data['email'], $data['endereco'], $data['celular'], $data['cpf'], $data['senha'], $idUsuario));
-        }
-
-        //Mostrar foto correta
-        $sql = "SELECT * FROM usuario_usuarios WHERE id = $idUsuario";
-        $records = $pdo->prepare($sql);
-        $records->execute();
-        $result = $records->fetch(PDO::FETCH_ASSOC);
-
-        //Atualização
-        $sql = "INSERT INTO atualizacao_atualizacoes (tipo, acao, id_usuario, id_responsavel, ids_vizualizados, criadoem) values(?,?,?,?,?,?)";
-        $q = $pdo->prepare($sql);
-
-        if ($result['tipo'] == "Cliente") {
-            $q->execute(array("Usuário", "Editar-Cliente", $ID, $_SESSION['id'], ".{$_SESSION['id']}.", date('Y-m-d H:i:s')));
-        } else if ($result['tipo'] == "Administrador") {
-            $q->execute(array("Usuário", "Editar-Administrador", $ID, $_SESSION['id'], ".{$_SESSION['id']}.", date('Y-m-d H:i:s')));
-        }
-
-        Database::disconnect();
-
-        $_SESSION['Editado'] = True;
-        echo '<script>
-                if ( window.history.replaceState ) {
-                    window.history.replaceState( null, null, window.location.href );
-                }
-            </script>';
+    if (isset($data['EditarUsuario']) == 'EditarUsuario') {
+        editarUsuario($data, selecionarUsuario($idUsuario));
     }
 ?>
-    <html class="no-js" lang="en">
+    <html>
 
     <head>
         <title>Editar Usuário</title>
         <!--Ícone-->
-        <link rel="icon" href="../../ico.png" type="image/x-icon" />
+        <link rel="icon" href="../../dist/img/icone.png">
         <!--Fonte-->
-        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        <link rel="stylesheet" href="<?php fonte(); ?>">
         <!--Bootstrap-->
-        <link rel="stylesheet" href="../../plugins/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../plugins/bootstrap/css/bootstrap.min.css">
         <!--Ik Ícones-->
-        <link rel="stylesheet" href="../../plugins/icon-kit/dist/css/iconkit.min.css">
+        <link rel="stylesheet" href="../../plugins/icon-kit/css/iconkit.min.css">
         <!--ScroolBar Menu-->
         <link rel="stylesheet" href="../../plugins/perfect-scrollbar/css/perfect-scrollbar.css">
-        <!--Pra Notificação-->
-        <link rel="stylesheet" href="../../plugins/jquery-toast-plugin/dist/jquery.toast.min.css">
+        <!--jQuery Toast-->
+        <link rel="stylesheet" href="../../plugins/jquery-toast/css/jquery.toast.min.css">
         <!--Theme CSS-->
         <link rel="stylesheet" href="../../dist/css/theme.min.css">
         <!--Card Foto Circular-->
         <link rel="stylesheet" href="../../plugins/paper-bootstrap-wizard/paper-bootstrap-wizard.css">
-        <!--Meus Scripts-->
-        <?php include_once '../../meus_scripts.php'; ?>
-        <!--Verificar E-mail-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <!--Scripts Das Máscaras-->
-        <script src="../../js/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $("#cpf").mask("999.999.999-99");
-            });
+        <!--Select 2-->
+        <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
 
-            $(document).ready(function() {
-                $("#celular").mask("(99) 99999-9999");
-            });
-        </script>
-        <?php if (isset($_SESSION['Editado'])) { ?>
-            <!--Notificação Editado-->
-            <script>
-                window.onload = function() {
-                    $.toast({
-                        text: 'Dados editados.',
-                        hideAfter: 5000,
-                        icon: 'success',
-                        loader: false,
-                        position: 'top-right'
-                    })
-                }
-            </script>
-        <?php
-            unset($_SESSION['Editado']);
-        }
-        ?>
+        <!--Scripts-->
+        <!--Máscaras-->
+        <script src="../../plugins/maskedinput/js/jquery.min.js"></script>
+        <?php sair("../../outros/sair.php"); ?>
+        <?php mascaraCPF("cpf"); ?>
+        <?php mascaraContato("contato"); ?>
+        <?php toastEditado(); ?>
+        <?php toastNaoEditado(); ?>
+        <!--/Scripts-->
     </head>
 
     <body>
         <div class="wrapper">
             <!--Header-->
-            <?php include_once '../header.php'; ?>
+            <?php include_once '../../componentes/headerDeModulos.php'; ?>
             <!--/Header-->
             <div class="page-wrap">
                 <!--Sidebar-->
-                <?php include_once '../sidebar.php'; ?>
+                <?php include_once '../../componentes/sidebarDeModulos.php'; ?>
                 <!--/Sidebar-->
                 <!--Principal-->
                 <div class="main-content">
                     <div class="container-fluid">
-                        <div class="page-header">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="page-header-title">
-                                        <a href="../../home.php"><i class="ik ik-home bg-blue"></i></a>
-                                    </div>
-                                    <div class="page-header-title">
-                                        <a href="home_usuarios.php"><i class="ik ik-users bg-blue"></i></a>
-                                    </div>
-
-                                    <?php if (isset($_SESSION['Administrador-Cliente'])) { ?>
-                                        <div class="page-header-title">
-                                            <a href="list_administrador.php"><i class="ik ik-user-check bg-blue"></i></a>
-                                        </div>
-                                        <div class="page-header-title">
-                                            <a href="list_administrador_cliente.php?id=<?php echo $_SESSION['Administrador-Cliente']; ?>"><i class="ik ik-list bg-blue"></i></a>
-                                        </div>
-                                    <?php } else { ?>
-                                        <?php if ($result['tipo'] == "Cliente") { ?>
-                                            <div class="page-header-title">
-                                                <a href="list_cliente.php"><i class="ik ik-list bg-blue"></i></a>
-                                            </div>
-                                        <?php } else if ($result['tipo'] == "Administrador") { ?>
-                                            <div class="page-header-title">
-                                                <a href="list_administrador.php"><i class="ik ik-user-check bg-blue"></i></a>
-                                            </div>
-                                        <?php } ?>
-                                    <?php } ?>
-
-                                    <div class="page-header-title">
-                                        <i class="ik ik-edit-2 bg-blue"></i>
-                                    </div>
-
-                                    <nav class="breadcrumb-container" aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item">
-                                                <a href="../../home.php">Página Inicial</a>
-                                            </li>
-                                            <li class="breadcrumb-item">
-                                                <a href="home_usuarios.php">Usuários</a>
-                                            </li>
-
-                                            <?php if (isset($_SESSION['Administrador-Cliente'])) { ?>
-                                                <li class="breadcrumb-item">
-                                                    <a href="list_administrador.php">Administradores</a>
-                                                </li>
-                                                <li class="breadcrumb-item">
-                                                    <a href="list_administrador_cliente.php?id=<?php echo $_SESSION['Administrador-Cliente']; ?>">Clientes de "<?php echo NomeUsuario($_SESSION['Administrador-Cliente']); ?>"</a>
-                                                </li>
-                                            <?php } else { ?>
-
-                                                <?php if ($result['tipo'] == "Cliente") { ?>
-                                                    <li class="breadcrumb-item">
-                                                        <a href="list_cliente.php">Clientes</a>
-                                                    </li>
-                                                <?php } else if ($result['tipo'] == "Administrador") { ?>
-                                                    <li class="breadcrumb-item">
-                                                        <a href="list_administrador.php">Administradores</a>
-                                                    </li>
-                                                <?php } ?>
-                                            <?php } ?>
-
-                                            <li class="breadcrumb-item active" aria-current="page">Editar Usuário</li>
-                                        </ol>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
+                        <!--Page-Header-->
+                        <?php pageHeader(
+                            [6, [["../../home.php", "home", "blue"], ["usuarios.home.php", "users", "blue"]], ["edit-2", "blue"]],
+                            [6, [["../../home.php", "Página Inicial"], ["usuarios.home.php", "Usuários"]], "Editar Usuário"]
+                        ); ?>
+                        <!--/Page-Header-->
                         <div class="row wizard-card">
                             <div class="col-md-12">
                                 <div class="card shadow-lg">
@@ -231,64 +90,27 @@ if (isset($_SESSION['id']) == '') {
                                         <form method="POST" enctype="multipart/form-data">
                                             <div class="col-lg-12">
                                                 <div class="row">
-                                                    <div class="form-group col-lg-2">
-                                                        <div class="picture-container">
-                                                            <div class="picture">
-                                                                <img src="../../img/usuarios/<?php echo $result['foto']; ?>" id="preview" class="picture-src rounded-circle" />
-                                                                <input name="foto" id="img-input" type="file" accept="image/*">
-                                                            </div>
-                                                            <h6>Escolher Imagem</h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-lg-4">
-                                                        <label>Nome <span class="text-danger">*</span></label>
-                                                        <input name="nome" type="text" class="form-control" placeholder="Nome" required="" value="<?php echo $result['nome']; ?>">
-                                                    </div>
-                                                    <div class="form-group col-lg-3">
-                                                        <label>E-mail <?php if ($result['tipo'] == "Administrador") { ?><span class="text-warning">*</span><?php } ?></label>
-                                                        <input name="email" id="email" type="email" class="form-control" placeholder="E-mail" <?php if ($result['tipo'] == "Administrador") { ?> required="" <?php } ?> value="<?php echo $result['email']; ?>">
-                                                    </div>
-                                                    <?php if ($result['tipo'] == "Administrador") { ?>
-                                                        <div class="form-group col-lg-3">
-                                                            <label>Senha <span class="text-danger">*</span></label>
-                                                            <input name="senha" type="password" class="form-control" placeholder="********" <?php if ($result['tipo'] == "Administrador") { ?> required="" <?php } ?> value="<?php echo $result['senha']; ?>">
-                                                        </div>
-                                                    <?php } ?>
+                                                    <?php formPicture([2], ["../../dist/img/usuarios/" . selecionarUsuario($idUsuario)['id'] . ".png", "preview"], ["foto", "img-input"]); ?>
+                                                    <?php formInput(["", 4, ""], ["Nome"], [true, "", ""], ["nome", "", "text", "Nome", selecionarUsuario($idUsuario)['nome'], true, false, false]); ?>
+                                                    <?php if (tipoUsuario($idUsuario) == "Administrador") {
+                                                        formInput(["", 3, ""], ["E-mail"], [true, "", ""], ["email", "email", "email", "email@email.com", selecionarUsuario($idUsuario)['email'], true, false, false]);
+                                                        formInput(["", 3, ""], ["Senha"], [true, "", ""], ["senha", "", "password", "********", selecionarUsuario($idUsuario)['senha'], true, false, false]);
+                                                    } else {
+                                                        formInput(["", 3, ""], ["E-mail"], [false, "", ""], ["email", "email", "email", "email@email.com", selecionarUsuario($idUsuario)['email'], false, false, false]);
+                                                    } ?>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="form-group col-lg-2">
-                                                        <label>Tipo <span class="text-danger">*</span></label>
-                                                        <select name="tipo" id="tipo" class="form-control" required="" disabled="">
-                                                            <?php if ($result['tipo'] == "Cliente") { ?>
-                                                                <option value="Cliente">Cliente</option>
-                                                            <?php } else if ($result['tipo'] == "Administrador") { ?>
-                                                                <option value="Administrador">Administrador</option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-lg-6">
-                                                        <label>Endereço</label>
-                                                        <input name="endereco" type="text" class="form-control" placeholder="Endereço" value="<?php echo $result['endereco']; ?>">
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label>CPF</label>
-                                                        <input name="cpf" id="cpf" type="text" class="form-control" placeholder="000.000.000-00" value="<?php echo $result['cpf']; ?>">
-                                                    </div>
-
-                                                    <div class="form-group col-lg-2">
-                                                        <label>Celular</label>
-                                                        <input name="celular" id="celular" type="text" class="form-control" placeholder="(00) 00000-0000" value="<?php echo $result['celular']; ?>">
-                                                    </div>
+                                                    <?php formInput(["", 2, ""], ["Tipo"], [false, "", ""], ["", "", "text", "", selecionarUsuario($idUsuario)['tipo'], false, true, true]); ?>
+                                                    <?php formInput(["", 6, ""], ["Endereço"], [false, "", ""], ["endereco", "", "text", "Endereço", selecionarUsuario($idUsuario)['endereco'], false, false, false]); ?>
+                                                    <?php formInput(["", 2, ""], ["CPF"], [false, "", ""], ["cpf", "cpf", "text", "000.000.000-00", selecionarUsuario($idUsuario)['cpf'], false, false, false]); ?>
+                                                    <?php formInput(["", 2, ""], ["Contato"], [false, "", ""], ["contato", "contato", "text", "(00) 00000-0000", selecionarUsuario($idUsuario)['contato'], false, false, false]); ?>
                                                 </div>
-                                                <?php if (isset($_SESSION['Administrador-Cliente'])) { ?>
-                                                    <a class="btn btn-primary text-white mr-2" href="list_administrador_cliente.php?id=<?php echo $_SESSION['Administrador-Cliente']; ?>">Clientes de "<?php echo NomeUsuario($_SESSION['Administrador-Cliente']); ?>"</a>
+                                                <?php if (tipoUsuario(selecionarUsuario($idUsuario)['id']) == "Administrador") { ?>
+                                                    <a class="btn btn-primary text-white mr-2" href="usuarios.administradores.php">Administradores</a>
+                                                <?php } else { ?>
+                                                    <a class="btn btn-primary text-white mr-2" href="usuarios.clientes.php">Clientes</a>
                                                 <?php } ?>
-                                                <?php if ($result['tipo'] == "Cliente") { ?>
-                                                    <a class="btn btn-primary text-white mr-2" href="list_cliente.php">Clientes</a>
-                                                <?php } else if ($result['tipo'] == "Administrador") { ?>
-                                                    <a class="btn btn-primary text-white mr-2" href="list_administrador.php">Administradores</a>
-                                                <?php } ?>
-                                                <button name="editar" type="submit" class="btn btn-primary" value="editar">Confirmar</button>
+                                                <button name="EditarUsuario" type="submit" class="btn btn-primary" value="EditarUsuario">Confirmar Alterações</button>
                                             </div>
                                         </form>
                                     </div>
@@ -299,69 +121,35 @@ if (isset($_SESSION['id']) == '') {
                 </div>
                 <!--/Principal-->
                 <!--Footer-->
-                <?php include_once '../../footer.php'; ?>
+                <?php include_once '../../componentes/footer.php'; ?>
                 <!--/Footer-->
             </div>
         </div>
         <!--jQuery-->
-        <script src="../../src/js/vendor/jquery-3.3.1.min.js"></script>
+        <script src="../../plugins/jquery/js/jquery-3.3.1.min.js"></script>
         <!--Popper (Header)-->
-        <script src="../../plugins/popper.js/dist/umd/popper.min.js"></script>
+        <script src="../../plugins/popper.js/js/popper.min.js"></script>
         <!--Bootstrap-->
-        <script src="../../plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
         <!--ScroolBar Menu-->
-        <script src="../../plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+        <script src="../../plugins/perfect-scrollbar/js/perfect-scrollbar.min.js"></script>
+        <!--jQuery Toast-->
+        <script src="../../plugins/jquery-toast/js/jquery.toast.min.js"></script>
         <!--Theme JS-->
         <script src="../../dist/js/theme.min.js"></script>
-        <!--Pra Notificação-->
-        <script src="../../plugins/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
-        <!--Script Das Máscaras-->
-        <script type="text/javascript" src="../../js/jquery.maskedinput-1.1.4.pack.js"></script>
-        <!--Preview da Foto-->
-        <script>
-            function readImage() {
-                if (this.files && this.files[0]) {
-                    var file = new FileReader();
-                    file.onload = function(e) {
-                        document.getElementById("preview").src = e.target.result;
-                    };
-                    file.readAsDataURL(this.files[0]);
-                }
-            }
-            document.getElementById("img-input").addEventListener("change", readImage, false);
-        </script>
-        <!--Verificar E-mail-->
-        <script>
-            var email = $("#email");
-            email.blur(function() {
-                $.ajax({
-                    url: 'verifica_email.php',
-                    type: 'POST',
-                    data: {
-                        "email": email.val()
-                    },
-                    success: function(data) {
-                        data = $.parseJSON(data);
+        <!--Select 2-->
+        <script src="../../plugins/select2/js/select2.min.js"></script>
+        <!--Máscaras-->
+        <script src="../../plugins/maskedinput/js/jquery.maskedinput-1.1.4.pack.js"></script>
 
-                        if (data.email == "Existe" && email.val() != "<?php echo $result['email']; ?>") {
-                            document.querySelector("#email").setCustomValidity("O e-mail '" + email.val() + "' já está cadastrado.");
-                        } else {
-                            document.querySelector("#email").setCustomValidity("");
-                        }
-                    }
-                });
-            });
-        </script>
-        <!--Desabilitar Enter-->
-        <script>
-            $(document).ready(function() {
-                $('input').keypress(function(e) {
-                    var code = null;
-                    code = (e.keyCode ? e.keyCode : e.which);
-                    return (code == 13) ? false : true;
-                });
-            });
-        </script>
+        <!--Preview da Foto-->
+        <?php previewDaFoto("preview"); ?>
+        <!--Verificar E-mail-->
+        <?php usuariosVerificarEmail("email", "../../outros/usuarios.verificarEmail.php") ?>
+        <!--Desabilitar Enter no Formulário-->
+        <?php desabilitarEnterNoFormulario(); ?>
+        <!--Pro Select 2-->
+        <?php select2("tipo"); ?>
     </body>
 
     </html>

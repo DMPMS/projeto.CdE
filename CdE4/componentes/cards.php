@@ -51,11 +51,22 @@ function cardItemBodyAtualizacoesUsuarios($row)
                 </div>
             </a>
         </div>';
+    } else if ($row['tipo'] == "Editar Usuário") {
+        echo '
+        <div class="feed-item">
+            <a>
+                <div class="feeds-left"><i class="ik ik-edit-2 text-primary"></i></div>
+                <div class="feeds-body">
+                    <h4 class="title text-primary">' . tipoUsuario($row['idUsuario']) . ' Editado(a)<small class="float-right text-muted">' . date('d/m/Y \à\s H:i', strtotime($row['dataDeCadastro'])) . '</small></h4>
+                    <small><strong>' . nomeUsuario($row['idResponsavel']) . '</strong> alterou dos dados de <strong>' . nomeUsuario($row['idUsuario']) . '</strong>.</small>
+                </div>
+            </a>
+        </div>';
     } else if ($row['tipo'] == "Excluir Usuário") {
         echo '
         <div class="feed-item">
             <a>
-                <div class="feeds-left"><i class="ik ik-plus-circle text-primary"></i></div>
+                <div class="feeds-left"><i class="ik ik-trash-2 text-primary"></i></div>
                 <div class="feeds-body">
                     <h4 class="title text-primary">' . tipoUsuario($row['idUsuario']) . ' Excluído(a)<small class="float-right text-muted">' . date('d/m/Y \à\s H:i', strtotime($row['dataDeCadastro'])) . '</small></h4>
                     <small><strong>' . nomeUsuario($row['idResponsavel']) . '</strong> excluiu <strong>' . nomeUsuario($row['idUsuario']) . '</strong>.</small>

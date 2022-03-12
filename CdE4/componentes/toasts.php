@@ -118,3 +118,43 @@ function toastUsuarioCadastrado()
         unset($_SESSION['UsuarioCadastrado']);
     }
 }
+
+function toastEditado()
+{
+    if (isset($_SESSION['Editado'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "Dados alterados com sucesso.",
+                    icon: "success",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['Editado']);
+    }
+}
+
+function toastNaoEditado()
+{
+    if (isset($_SESSION['NaoEditado'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "Nenhum dado foi alterado.",
+                    icon: "warning",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['NaoEditado']);
+    }
+}
