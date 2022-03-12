@@ -42,6 +42,17 @@ function qtdUsuarios($tipo = "'Administrador','Cliente'")
     return $result['total'];
 }
 
+function qdtAtualizacoesUsuarios(){
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(*) as total FROM usuarios_atualizacoes WHERE ativo = 0";
+    $records = $pdo->prepare($sql);
+    $records->execute();
+    $result = $records->fetch(PDO::FETCH_ASSOC);
+    Database::disconnect();
+
+    return $result['total'];
+}
+
 function formInputSelect2Usuarios()
 {
     if (tipoUsuario($_SESSION['id']) == "Administrador Geral") {
@@ -95,7 +106,7 @@ function NovoUsuario($data)
 
     $q->execute(array($data['nome'], $data['email'], $data['senha'], $data['tipo'], $data['contato'],  $data['cpf'], $data['endereco'], $_SESSION['id'], horarioAtual()));
 
-    novaAtualizacaoUsuario(["Novo " . $data['tipo'], $ultimoIdUsuario, $_SESSION['id'], "." . $_SESSION['id'] . ".", horarioAtual()]);
+    novaAtualizacaoUsuario(["Novo Usuario", $ultimoIdUsuario, $_SESSION['id'], "." . $_SESSION['id'] . ".", horarioAtual()]);
 
     if ($data['tipo'] == "Cliente") {
         $_SESSION['UsuarioCadastrado'] = ultimoIdUsuario();;
@@ -116,7 +127,7 @@ function ExcluirUsuario($data)
     $q = $pdo->prepare($sql);
     $q->execute(array(1, $data['id']));
 
-    novaAtualizacaoUsuario(["Excluir " . tipoUsuario($data['id']), $data['id'],  $_SESSION['id'], "." . $_SESSION['id'] . ".", horarioAtual()]);
+    novaAtualizacaoUsuario(["Excluir Usuário", $data['id'],  $_SESSION['id'], "." . $_SESSION['id'] . ".", horarioAtual()]);
     Database::disconnect();
 
     $_SESSION['UsuarioExcluido'] = $data['id'];
