@@ -38,6 +38,7 @@ if (!logado()) {
         <!--Scripts-->
         <?php sair("outros/sair.php"); ?>
         <?php toastBemVindo(); ?>
+        <?php toastIndisponivel(); ?>
         <!--/Scripts-->
     </head>
 

@@ -10,7 +10,7 @@ require_once("../../outros/outrasFuncoes.php");
 if (!logado()) {
     redirecionarPara("../../index.php", false);
 } else if (tipoUsuario($_SESSION['id']) != "Administrador Geral") {
-    $_SESSION['indisponivel'] = True;
+    $_SESSION['Indisponivel'] = True;
     redirecionarPara("../../home.php", false);
 } else if (getIdInvalido($_GET['id'])) {
     redirecionarPara("../../home.php", false);
@@ -76,8 +76,8 @@ if (!logado()) {
                     <div class="container-fluid">
                         <!--Page-Header-->
                         <?php pageHeader(
-                            [6, [["../../home.php", "home", "blue"], ["usuarios.home.php", "users", "blue"]], ["edit-2", "blue"]],
-                            [6, [["../../home.php", "Página Inicial"], ["usuarios.home.php", "Usuários"]], "Editar Usuário"]
+                            [6, [["../../home.php", "home", "blue"], ["usuarios.home.php", "users", "blue"], ["usuarios.clientes.php", "list", "blue"]], ["edit-2", "blue"]],
+                            [6, [["../../home.php", "Página Inicial"], ["usuarios.home.php", "Usuários"], ["usuarios.clientes.php", "Clientes"]], "Editar Usuário"]
                         ); ?>
                         <!--/Page-Header-->
                         <div class="row wizard-card">

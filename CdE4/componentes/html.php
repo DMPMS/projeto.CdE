@@ -363,7 +363,7 @@ function dataTableTds($tabela, $row)
             $acoes = '
         <td class="text-center">
             <button title="Dados" type="button" class="btn btn-icon btn-primary mr-1" data-toggle="modal" data-target="#Dados' . $row['id'] . '"><i class="ik ik-eye"></i></button>
-            <a title="Editar" href="usuarios.editarUsuario.php?id=' . $row['id'] . '" class="btn btn-icon btn-warning mr-1"><i class="ik ik-edit-2"></i></a>
+            <a title="Editar" href="usuarios.editar.php?id=' . $row['id'] . '" class="btn btn-icon btn-warning mr-1"><i class="ik ik-edit-2"></i></a>
             <button title="Excluir" type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#Excluir' . $row['id'] . '"><i class="ik ik-trash-2"></i></button>
         </td>';
         } else {
@@ -428,4 +428,3 @@ function fotoDoModal($div, $img)
         <img src="' . $img[0] . '" class="rounded-circle" width="120px" height="120px">
     </div>';
 }
-

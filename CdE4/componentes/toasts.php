@@ -158,3 +158,23 @@ function toastNaoEditado()
         unset($_SESSION['NaoEditado']);
     }
 }
+
+function toastIndisponivel()
+{
+    if (isset($_SESSION['Indisponivel'])) {
+        echo '
+        <script>
+            window.onload = function() {
+                $.toast({
+                    text: "Página indisponível.",
+                    icon: "warning",
+                    hideAfter: 5000,
+                    loader: false,
+                    position: "top-right"
+                })
+            }
+        </script>';
+
+        unset($_SESSION['Indisponivel']);
+    }
+}

@@ -65,10 +65,10 @@ function tipoUsuario($idUsuario)
 function getIdInvalido($id)
 {
     if (!isset($id) || $id == '') {
-        $_SESSION['indisponivel'] = True;
+        $_SESSION['Indisponivel'] = True;
         return true;
     } else if (registroIndisponivel(selecionarUsuario($id))) {
-        $_SESSION['indisponivel'] = True;
+        $_SESSION['Indisponivel'] = True;
         return true;
     } else {
         return false;
@@ -78,7 +78,6 @@ function getIdInvalido($id)
 function registroIndisponivel($result)
 {
     if ((is_array($result) ? count($result) : 0) == 0 || $result['ativo'] == 1) {
-        $_SESSION['indisponivel'] = True;
         return true;
     } else {
         return false;
