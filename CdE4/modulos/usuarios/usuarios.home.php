@@ -16,6 +16,8 @@ if (!logado()) {
     include_once("../../componentes/html.php");
     include_once("../../componentes/scripts.php");
     include_once("../../componentes/toasts.php");
+    include_once("../../componentes/graficos.php");
+
 
     $sqlNovosUsuarios = "SELECT * FROM usuarios_usuarios WHERE ativo = 0 ORDER BY id DESC limit 5";
     $sqlAtualizacoesUsuarios = "SELECT * FROM usuarios_atualizacoes WHERE ativo = 0 ORDER BY id DESC";
@@ -79,6 +81,9 @@ if (!logado()) {
                             <?php cardAtualizacoesUsuarios($pdo, $sqlAtualizacoesUsuarios); ?>
                             <!--/Últimas Atualizações-->
                         </div>
+                        <div class="row clearfix">
+                            <?php graficoLineChart(12, 12, "graficoUsuariosCadastradosPorMes") ?>
+                        </div>
                     </div>
                 </div>
                 <!--/Principal-->
@@ -99,6 +104,14 @@ if (!logado()) {
         <script src="../../plugins/jquery-toast/js/jquery.toast.min.js"></script>
         <!--Theme JS-->
         <script src="../../dist/js/theme.min.js"></script>
+
+        <!--AmChats-->
+        <script src="../../plugins/amcharts/js/amcharts.js"></script>
+        <script src="../../plugins/amcharts/js/gauge.js"></script>
+        <script src="../../plugins/amcharts/js/serial.js"></script>
+        <script src="../../plugins/amcharts/themes/light.js"></script>
+        <script src="../../plugins/amcharts/js/pie.js"></script>
+        <script src="../../dist/js/graficos.php"></script>
     </body>
 
     </html>
