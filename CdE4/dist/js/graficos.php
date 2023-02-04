@@ -1,6 +1,15 @@
+<?php 
+session_start();
+
+require_once("../../database.php");
+$pdo = Database::connect();
+
+$sql = "SELECT * FROM cadastros_de_usuarios_ultimos_meses";
+?>
 var chart = AmCharts.makeChart("graficoUsuariosCadastradosPorMes", {
         "type": "serial",
         "theme": "light",
+        "dataDateFormat": "YYYY-MM-DD",
         "precision": 0,
         "valueAxes": [{
             "gridAlpha": 0
@@ -51,41 +60,68 @@ var chart = AmCharts.makeChart("graficoUsuariosCadastradosPorMes", {
             "borderThickness": 1,
             "shadowAlpha": 0
         },
-        "dataProvider": [{
-            "date": "2013-01-16",
-            "Clientes": 71,
-            "Administradores": 75
-        }, {
-            "date": "2013-01-17",
-            "Clientes": 80,
-            "Administradores": 84
-        }, {
-            "date": "2013-01-18",
-            "Clientes": 78,
-            "Administradores": 83
-        }, {
-            "date": "2013-01-19",
-            "Clientes": 85,
-            "Administradores": 88
-        }, {
-            "date": "2013-01-20",
-            "Clientes": 87,
-            "Administradores": 85
-        }, {
-            "date": "2013-01-21",
-            "Clientes": 97,
-            "Administradores": 88
-        }, {
-            "date": "2013-01-22",
-            "Clientes": 93,
-            "Administradores": 88
-        }, {
-            "date": "2013-01-23",
-            "Clientes": 85,
-            "Administradores": 80
-        }, {
-            "date": "2013-01-24",
-            "Clientes": 90,
-            "Administradores": 85
-        }]
+        "dataProvider": [
+        <?php foreach ($pdo->query($sql) as $row) { ?>
+        {
+            "date": "<?php echo $row['onzeMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['onzeMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['onzeMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['dezMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['dezMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['dezMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['noveMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['noveMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['noveMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['oitoMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['oitoMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['oitoMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['seteMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['seteMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['seteMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['seisMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['seisMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['seisMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['cincoMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['cincoMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['cincoMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['quatroMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['quatroMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['quatroMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['tresMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['tresMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['tresMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['doisMesesAtras']; ?>-01",
+            "Clientes": <?php echo $row['doisMesesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['doisMesesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['umMesAtras']; ?>-01",
+            "Clientes": <?php echo $row['umMesAtrasCliente']; ?>,
+            "Administradores": <?php echo $row['umMesAtrasAdministrador']; ?>,
+        },
+        {
+            "date": "<?php echo $row['mesAtual']; ?>-01",
+            "Clientes": <?php echo $row['mesAtualCliente']; ?>,
+            "Administradores": <?php echo $row['mesAtualAdministrador']; ?>,
+        },
+        <?php } ?>
+        ]
     });

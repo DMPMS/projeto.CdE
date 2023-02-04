@@ -1,0 +1,50 @@
+/*CRIANDO TABELAS.*/
+
+CREATE TABLE pessoas (
+idPessoa INTEGER(11) NOT NULL,
+nome VARCHAR(50) NOT NULL,
+tipo VARCHAR(50) NOT NULL,
+email VARCHAR(50),
+senha VARCHAR(50),
+contato VARCHAR(50),
+CPF VARCHAR(50),
+endereco VARCHAR(100),
+idResponsavel INTEGER(11) NOT NULL,
+dataDeCadastro DATETIME NOT NULL,
+inativo INTEGER(1) NOT NULL);
+
+CREATE TABLE pessoas_atualizacoes (
+idAtualizacao INTEGER(11) NOT NULL,
+tipo VARCHAR(50) NOT NULL,
+idPessoa INTEGER(11) NOT NULL,
+idsVisualizadores TEXT NOT NULL,
+idResponsavel INTEGER(11) NOT NULL,
+dataDeCadastro DATETIME NOT NULL,
+inativo INTEGER(1) NOT NULL);
+
+/* DEFININDO CHAVES PRIMÁRIAS DE CADA TABELA.*/
+
+ALTER TABLE pessoas
+ADD CONSTRAINT pkPessoa PRIMARY KEY (idPessoa),
+CHANGE idPessoa idPessoa INTEGER(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE pessoas_atualizacoes
+ADD CONSTRAINT pkAtualizacao PRIMARY KEY (idAtualizacao),
+CHANGE idAtualizacao idAtualizacao INTEGER(11) NOT NULL AUTO_INCREMENT;
+
+/* DEFININDO CHAVES ESTRANGEIRAS DE CADA TABELA.*/
+
+ALTER TABLE pessoas
+ADD CONSTRAINT pessoas_pessoas FOREIGN KEY (idResponsavel) REFERENCES pessoas (idPessoa)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+
+ALTER TABLE pessoas_atualizacoes
+ADD CONSTRAINT pessoas_atualizacoes_pessoas FOREIGN KEY (idPessoa) REFERENCES pessoas (idPessoa)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+
+ALTER TABLE pessoas_atualizacoes
+ADD CONSTRAINT pessoas_atualizacoes_pessoasResponsavel FOREIGN KEY (idResponsavel) REFERENCES pessoas (idPessoa)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;

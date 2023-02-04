@@ -3,9 +3,11 @@ TITLE, NOME, ID, TIPO, CLASS, PLACEHOLDER, VALUE, REQUIRED, DISABLED, READONLY,
 //////////ATUAIS//////////
 
 CRIAR FUNÇÃO CAASTRAR USUARIO
+CRIAR TOAST USUARIO CADASTRADO
 renomear redirecionar para para outros
 colocar pdo como parametro em funcoes
 TRATAR LOWER SE EXISTE NO BANCO
+traduzir grafico: https://www.amcharts.com/docs/v4/tutorials/creating-translations/
 
 //////////FUTURAS//////////
 

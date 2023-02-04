@@ -1,0 +1,77 @@
+CREATE VIEW cadastros_de_usuarios_ultimos_meses as
+SELECT DISTINCT
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE, '%Y-%m')) as mesAtualCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE, '%Y-%m')) as mesAtualAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE, '%Y-%m')) as mesAtual,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH, '%Y-%m')) as umMesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH, '%Y-%m')) as umMesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH, '%Y-%m')) as umMesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 2 MONTH, '%Y-%m')) as doisMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 2 MONTH, '%Y-%m')) as doisMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 2 MONTH, '%Y-%m')) as doisMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 3 MONTH, '%Y-%m')) as tresMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 3 MONTH, '%Y-%m')) as tresMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 3 MONTH, '%Y-%m')) as tresMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 4 MONTH, '%Y-%m')) as quatroMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 4 MONTH, '%Y-%m')) as quatroMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 4 MONTH, '%Y-%m')) as quatroMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 5 MONTH, '%Y-%m')) as cincoMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 5 MONTH, '%Y-%m')) as cincoMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 5 MONTH, '%Y-%m')) as cincoMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 6 MONTH, '%Y-%m')) as seisMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 6 MONTH, '%Y-%m')) as seisMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 6 MONTH, '%Y-%m')) as seisMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 7 MONTH, '%Y-%m')) as seteMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 7 MONTH, '%Y-%m')) as seteMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 7 MONTH, '%Y-%m')) as seteMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 8 MONTH, '%Y-%m')) as oitoMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 8 MONTH, '%Y-%m')) as oitoMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 8 MONTH, '%Y-%m')) as oitoMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 9 MONTH, '%Y-%m')) as noveMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 9 MONTH, '%Y-%m')) as noveMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 9 MONTH, '%Y-%m')) as noveMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 10 MONTH, '%Y-%m')) as dezMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 10 MONTH, '%Y-%m')) as dezMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 10 MONTH, '%Y-%m')) as dezMesesAtras,
+
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Cliente' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 11 MONTH, '%Y-%m')) as onzeMesesAtrasCliente,
+(SELECT COUNT(*) FROM usuarios_usuarios
+WHERE ativo = 0 AND tipo = 'Administrador' AND DATE_FORMAT(dataDeCadastro, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 11 MONTH, '%Y-%m')) as onzeMesesAtrasAdministrador,
+(SELECT DATE_FORMAT(CURRENT_DATE - INTERVAL 11 MONTH, '%Y-%m')) as onzeMesesAtras
+
+
+/////////////////////////////////////////////////////////////////////
